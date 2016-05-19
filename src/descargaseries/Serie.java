@@ -38,9 +38,9 @@ public class Serie {
                 urlcapitulo[vector.size()-i-1]=(String)vector.get(i).child(1).attr("href");
             }
             
-            for (int i = 0; i < urlcapitulo.length; i++) {
-                System.out.println(urlcapitulo[i]);
-            }
+                Thread a = new Descarga(urlcapitulo[1]);
+                a.start();
+
             
             duracion=urlcapitulo.length;
             //name=doc.getElementsByClass("serie-header__title").html();
