@@ -5,7 +5,6 @@
  */
 package descargaseries;
 
-import descargaseries.Excepciones.UrlNoAdecuada;
 import java.io.IOException;
 import java.net.URL;
 import java.util.logging.Level;
@@ -27,31 +26,27 @@ public class Serie {
     String url;
 
     public Serie(String url) {
+        this.url = url;
+        Document doc;
         try {
-            this.url = url;
-            Document doc = Jsoup.connect(url).userAgent("mozilla").get();
-  
-            Elements vector = doc.getElementsByClass("serie-capitulos__list__item");
-            urlcapitulo=new String[vector.size()];
-            
-            for (int i = 0; i < vector.size(); i++) {
-                urlcapitulo[vector.size()-i-1]=(String)vector.get(i).child(1).attr("href");
-            }
-            
-                Thread a = new Descarga(urlcapitulo[1]);
-                a.start();
+            doc = Jsoup.connect(url).userAgent("mozilla").get();
 
-            
-            duracion=urlcapitulo.length;
+            Elements vector = doc.getElementsByClass("serie-capitulos__list__item");
+            urlcapitulo = new String[vector.size()];
+
+            for (int i = 0; i < vector.size(); i++) {
+                urlcapitulo[vector.size() - i - 1] = (String) vector.get(i).child(1).attr("href");
+            }
+
+            Thread a = new Descarga(urlcapitulo[1]);
+            a.start();
+
+            duracion = urlcapitulo.length;
             //name=doc.getElementsByClass("serie-header__title").html();
 //            Elements vector=doc.getElementsByClass("serie-capitulos__list__item");
 //            for (int i = 0; i < vector.toArray().length; i++) {
 //                System.out.println(vector.get(i).html());
 //            }
-            
-
-        } catch (UrlNoAdecuada ex) {
-            Logger.getLogger(Serie.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(Serie.class.getName()).log(Level.SEVERE, null, ex);
         }
