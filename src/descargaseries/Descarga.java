@@ -17,7 +17,7 @@ import org.jsoup.nodes.Document;
  * @author alumno
  */
 public class Descarga  extends Thread {
-    private String url,urldescarga;
+    private String url;
 
     public Descarga(String url)  {
             this.url = url;
@@ -29,7 +29,7 @@ public class Descarga  extends Thread {
             Document doc = Jsoup.connect(url).userAgent("mozilla").get();
             Document doc2 = Jsoup.connect(doc.getElementsByTag("a").select("[href^=http://www.animeyt.tv/descargar/]").attr("href")).userAgent("mozilla").get();
             String script2parse = doc2.getElementsByTag("script").last().html();
-            urldescarga = script2parse.substring(
+            String urldescarga = script2parse.substring(
                     script2parse.indexOf("{ url = \"")+("{ url = \"").length(), script2parse.indexOf("\";"));
             System.out.println("FINNN");
         } catch (IOException ex) {
