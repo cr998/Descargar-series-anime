@@ -8,7 +8,9 @@ package descargaseries;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -27,9 +29,11 @@ import org.jsoup.nodes.Document;
 public class Descarga extends Thread {
 
     private String url;
+    private int percent;
 
     public Descarga(String url) {
         this.url = url;
+        this.percent=0;
     }
 
     @Override
@@ -59,7 +63,6 @@ public class Descarga extends Thread {
             InetAddress address = InetAddress.getByName(link.getHost());
             String ip = address.getHostAddress();
             
-            System.out.println(url);
 
             Socket sc = new Socket(ip, 80);
             String peticion = "GET "+link.getFile()+" HTTP/1.1\n";
@@ -71,7 +74,6 @@ public class Descarga extends Thread {
             peticion += "Connection: Keep-Alive\n\n";
             DataOutputStream salida = new DataOutputStream(sc.getOutputStream());
             salida.write(peticion.getBytes());
-            System.out.println(peticion);
             DataInputStream entrada =new DataInputStream(sc.getInputStream());
             InputStreamReader isr =new InputStreamReader(entrada);
             BufferedReader br=new BufferedReader(isr);
@@ -90,14 +92,24 @@ public class Descarga extends Thread {
             URLConnection con = url2.openConnection();
             con.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36");
             con.connect();
-            DataInputStream entrada2 =new DataInputStream(con.getInputStream());
-            InputStreamReader isr2 =new InputStreamReader(entrada2);
-            BufferedReader br2=new BufferedReader(isr2);
-            String linea2=br2.readLine();
-            while(linea2!=null){
-                linea2=br2.readLine();
-                System.out.println(linea2);
+            String longitud=con.getHeaderField("Content-Length");
+            InputStream is= con.getInputStream();
+            FileOutputStream fos = new FileOutputStream("1.mp4");
+            byte [] array = new byte[100];
+            int i=0;
+            int leido = is.read(array);
+            int porcent=-1;
+            while (leido > 0) {
+               fos.write(array,0,leido);
+               leido=is.read(array);
+               i++;
+               if((long) i*array.length*100/Integer.parseInt(longitud)!=porcent){
+                   porcent=(int) i*array.length*100/Integer.parseInt(longitud);
+                   this.percent=porcent;
+               }
+               
             }
+            
             
         } catch (UnknownHostException ex) {
             Logger.getLogger(Descarga.class.getName()).log(Level.SEVERE, null, ex);
