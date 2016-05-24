@@ -31,7 +31,7 @@ import org.jsoup.nodes.Document;
 public class Descarga extends Thread {
 
     private String url;
-    private int percent;
+    private double percent;
     private String name;
     private String ruta;
     private DescargaStatus g;
@@ -39,7 +39,8 @@ public class Descarga extends Thread {
     public Descarga(String url) {
         this.url = url;
         this.percent = 0;
-        g=
+        g = new DescargaStatus();
+        g.setVisible(true);
     }
 
     @Override
@@ -51,14 +52,17 @@ public class Descarga extends Thread {
             String urldescarga = script2parse.substring(script2parse.indexOf("{ url = \"") + ("{ url = \"").length(), script2parse.indexOf("\";"));
 
             if (urldescarga.contains("mega")) {
+                this.g.dispose(); 
                 throw new Exception("Enlace de mega no implementado");
             }
 
             enlaceNormal(urldescarga);
         } catch (IOException ex) {
             Logger.getLogger(Descarga.class.getName()).log(Level.SEVERE, null, ex);
+            g.dispose();
         } catch (Exception ex) {
             Logger.getLogger(Descarga.class.getName()).log(Level.SEVERE, null, ex);
+            g.dispose();
         }
     }
 
@@ -102,17 +106,24 @@ public class Descarga extends Thread {
             BufferedInputStream in = new BufferedInputStream(con.getInputStream());
             File fil = new File(filename.split("\"")[1]);
             this.name = fil.getName();
-            System.out.println(name+" -> "+(Integer.parseInt(longitud)/1048576));
+            System.out.println(name + " -> " + (Integer.parseInt(longitud) / 1048576));
             fil.createNewFile();
             BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(fil));
 
             int b;
-            int leido=0;
-            while ((b=in.read())!=-1) {
+            int leido = 0;
+            this.percent=-1;
+            while ((b = in.read()) != -1) {
                 out.write(b);
                 leido++;
+                if(this.percent!=(leido/Integer.parseInt(longitud))*100){
+                    percent=(double) (((double)leido/(double)Integer.parseInt(longitud))*100);
+                    this.setPercent(percent);
+                }
+
             }
-            
+            g.dispose();
+
             in.close();
             out.close();
 
@@ -124,4 +135,10 @@ public class Descarga extends Thread {
 
         return endes;
     }
+
+    private void setPercent(double percent) {
+        this.percent = percent;
+        g.getjProgressBar1().setValue((int)percent);
+    }
+
 }
