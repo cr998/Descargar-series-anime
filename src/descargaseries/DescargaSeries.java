@@ -5,7 +5,11 @@
  */
 package descargaseries;
 
-import java.util.Scanner;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Iterator;
+import javax.swing.JFileChooser;
+
 
 /**
  *
@@ -13,20 +17,24 @@ import java.util.Scanner;
  */
 public class DescargaSeries {
 
+    public static String ruta="E:\\series\\";
     /**
      * @param args the command line arguments
      */
-    
-    public static void main(String[] args) { 
-        if(System.getProperty("os.name").contains("Linux")){
+    public static void main(String[] args) {
+//        if(new File("/tmp").exists() && new File("/tmp").isDirectory()){
+//            System.out.println("Se creara una carpeta temporal");
+//            new File("/tmp").mkdirs();
+//        }
+//          
+//        System.out.println("Escaneando");
+//        ArrayList<Serie> series = ScanSeries.start();
+//        
+//        DownloaderManager down = new DownloaderManager("E:\\series\\", series);
+//        down.start();
             
-            new Serie("http://www.animeyt.tv/12-sai-chicchana-mune-no-tokimeki");
-            
-        }else{
-            System.out.println("El programa solo se puede ejecutar en linux");
-        }
+        new Serie("http://www.animeyt.tv/-summer",true).descargar(ruta);
 
-        
     }
-    
+//
 }
