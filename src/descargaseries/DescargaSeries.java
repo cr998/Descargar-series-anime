@@ -17,7 +17,7 @@ import javax.swing.JFileChooser;
  */
 public class DescargaSeries {
 
-    public static String ruta="E:\\series\\";
+    public static String ruta="/media/cr998/SPM1200HD/series/";
     /**
      * @param args the command line arguments
      */
@@ -27,14 +27,12 @@ public class DescargaSeries {
 //            new File("/tmp").mkdirs();
 //        }
 //          
-//        System.out.println("Escaneando");
-//        ArrayList<Serie> series = ScanSeries.start();
-//        
-//        DownloaderManager down = new DownloaderManager("E:\\series\\", series);
-//        down.start();
-            
-        new Serie("http://www.animeyt.tv/-summer",true).descargar(ruta);
-
+        System.out.println("Escaneando");
+        ArrayList<Serie> series = ScanSeries.start();
+        
+        System.out.println("Descargando");
+        DownloaderManager down = new DownloaderManager("E:\\series\\", series);
+        down.start();
     }
 //
 }

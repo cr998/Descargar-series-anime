@@ -46,7 +46,7 @@ public class Descarga extends Thread {
         gui = true;
     }
 
-    Descarga(String string, String dirsalida) {
+    Descarga(String url, String dirsalida) {
         this.url = url;
         this.percent = 0;
         this.acabada = false;
@@ -63,7 +63,11 @@ public class Descarga extends Thread {
             String urldescarga = script2parse.substring(script2parse.indexOf("{ url = \"") + ("{ url = \"").length(), script2parse.indexOf("\";"));
 
             if (urldescarga.contains("mega")) {
-                this.g.dispose();
+                
+                if(g!=null){
+                    this.g.dispose();
+                }
+                
                 throw new Exception("Enlace de mega no implementado");
             }
 
@@ -117,10 +121,11 @@ public class Descarga extends Thread {
             String longitud = con.getHeaderField("Content-Length");
             String filename = con.getHeaderField("Content-Disposition");
             BufferedInputStream in = new BufferedInputStream(con.getInputStream());
-            File fil = new File(dirsalida+filename.split("\"")[1]);
+            System.out.println((dirsalida+filename.split("\"")[1]).replace(" ", ""));
+            File fil = new File((dirsalida+filename.split("\"")[1]).replace(" ", ""));
+            new File(fil.getParent()).mkdirs();
             this.name = fil.getName();
             System.out.println(name + " -> " + (double) (Integer.parseInt(longitud) / 1048576));
-            fil.createNewFile();
             BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(fil));
 
             if (gui) {
@@ -152,6 +157,8 @@ public class Descarga extends Thread {
             Logger.getLogger(Descarga.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(Descarga.class.getName()).log(Level.SEVERE, null, ex);
+        }catch(SecurityException e){
+            System.out.println("error en esguridad");
         } finally {
 
             this.acabada = true;

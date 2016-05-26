@@ -49,7 +49,7 @@ public class Serie {
             System.out.println("olle, no has obtenido los datos antes de descargar");
         } else {
             for (int i = 0; i < urlcapitulo.length; i++) {
-                new Descarga(urlcapitulo[i], dirsalida).run();
+                new Descarga(urlcapitulo[i], dirsalida+this.name+"\\").run();
             }
         }
 
@@ -67,10 +67,13 @@ public class Serie {
             Elements vector = doc.getElementsByClass("serie-capitulos__list__item");
             urlcapitulo = new String[vector.size()];
             capitulos = urlcapitulo.length;
-
+            
+            
             for (int i = 0; i < vector.size(); i++) {
                 urlcapitulo[vector.size() - i - 1] = (String) vector.get(i).child(1).attr("href");
+                
             }
+
 
             //name=doc.getElementsByClass("serie-header__title").html();
 //            Elements vector=doc.getElementsByClass("serie-capitulos__list__item");
