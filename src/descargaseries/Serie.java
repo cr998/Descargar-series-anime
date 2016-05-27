@@ -17,21 +17,24 @@ import org.jsoup.select.Elements;
  * @author alumno
  */
 public class Serie {
-
+    
+    private int id;
     private String name;
     private String urlcapitulo[];
     private int capitulos;
     private String url;
     private String[] categorias;
 
-    public Serie(String url, boolean get) {
+    public Serie(int id,String url, boolean get) {
+        this.id=id;
         this.url = url;
         if (get) {
             getData();
         }
     }
 
-    public Serie(String url) {
+    public Serie(int id,String url) {
+        this.id=id;
         this.url = url;
     }
 
@@ -43,16 +46,18 @@ public class Serie {
         }
     }
 
-    public void descargar(String dirsalida) {
-
+    public Descarga[] descargar(String dirsalida) {
+        
+        Descarga[] des = null;
         if (urlcapitulo == null) {
             System.out.println("olle, no has obtenido los datos antes de descargar");
         } else {
+            des=new Descarga[urlcapitulo.length];
             for (int i = 0; i < urlcapitulo.length; i++) {
-                new Descarga(urlcapitulo[i], dirsalida+this.name+"\\").run();
+                des[i]=new Descarga(urlcapitulo[i], dirsalida+this.name+"\\");
             }
         }
-
+        return des;
     }
 
     public void getData() {
@@ -100,5 +105,11 @@ public class Serie {
     public String[] getCategorias() {
         return categorias;
     }
+
+    public String getUrl() {
+        return url;
+    }
+    
+    
 
 }

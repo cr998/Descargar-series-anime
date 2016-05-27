@@ -64,10 +64,6 @@ public class Descarga extends Thread {
 
             if (urldescarga.contains("mega")) {
                 
-                if(g!=null){
-                    this.g.dispose();
-                }
-                
                 throw new Exception("Enlace de mega no implementado");
             }
 
@@ -121,7 +117,7 @@ public class Descarga extends Thread {
             String longitud = con.getHeaderField("Content-Length");
             String filename = con.getHeaderField("Content-Disposition");
             BufferedInputStream in = new BufferedInputStream(con.getInputStream());
-            System.out.println((dirsalida+filename.split("\"")[1]).replace(" ", ""));
+            System.out.println(filename.split("\"")[1].replace(" ", ""));
             File fil = new File((dirsalida+filename.split("\"")[1]).replace(" ", ""));
             new File(fil.getParent()).mkdirs();
             this.name = fil.getName();
