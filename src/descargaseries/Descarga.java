@@ -59,9 +59,9 @@ public class Descarga extends Thread {
         try {
             Document doc = Jsoup.connect(url).userAgent("Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36").get();
             Document doc2 = Jsoup.connect(doc.getElementsByTag("a").select("[href^=http://www.animeyt.tv/descargar/]").attr("href")).userAgent("mozilla").get();
-            String script2parse = doc2.getElementsByTag("script").last().html();
-            String urldescarga = script2parse.substring(script2parse.indexOf("{ url = \"") + ("{ url = \"").length(), script2parse.indexOf("\";"));
-
+            String script2parse = doc2.getElementsByTag("script").get(doc2.getElementsByTag("script").size()-4).html();
+            String urldescarga = script2parse.substring(script2parse.indexOf("url = \"h")+7,script2parse.indexOf(".mp4")+4);
+            System.out.println(urldescarga);
             if (urldescarga.contains("mega")) {
                 
                 throw new Exception("Enlace de mega no implementado");
