@@ -29,30 +29,12 @@ public class DescargaSeries {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        Serie s=new Serie(1,"http://www.animeyt.tv/renai-boukun",true);
+        Descarga[] des = s.descargar("/Users/cr998/Desktop/series/1/");
         
-        DownloadHandler down = new DownloadHandler();
-        
-
-        try {
-            Connection c = DriverManager.getConnection("jdbc:sqlite:data.db");
-            Statement stmt = c.createStatement();
-            String sql="SELECT id, url FROM Series WHERE descargada = 0 AND duracion <=20";
-            ResultSet r = stmt.executeQuery(sql);
-            int i=0;
-            while(r.next()){
-                i++;
-                Serie s = new Serie(r.getInt("id"),r.getString("url"),true);
-                System.out.println(s.getName());
-                Descarga[] des = s.descargar(ruta);
-                for (int j = 0; j < des.length; j++) {
-                    down.addDownload(des[j]);
-                }
-            }
-            
-            down.start();
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(DownloadHandler.class.getName()).log(Level.SEVERE, null, ex);
+        for (int i = 0; i < des.length; i++) {
+            Descarga de = des[i];
+            de.run();
         }
     }
 //
