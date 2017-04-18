@@ -56,7 +56,7 @@ public class ScanSeries {
             seriesperpage= new Serie[animes.size()];
             int e=0;
             while(ite.hasNext()){
-                seriesperpage[e]=new Serie(ite.next().attr("href"),true);
+                //seriesperpage[e]=new Serie(ite.next().attr("href"),true);
                 System.out.println(seriesperpage[e].getName());
                 e++;
             }
