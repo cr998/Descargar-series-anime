@@ -54,7 +54,7 @@ public class Serie {
         } else {
             des=new Descarga[urlcapitulo.length];
             for (int i = 0; i < urlcapitulo.length; i++) {
-                des[i]=new Descarga(urlcapitulo[i], dirsalida+this.name+"\\");
+                des[i]=new Descarga(urlcapitulo[i], dirsalida+this.name);
             }
         }
         return des;
